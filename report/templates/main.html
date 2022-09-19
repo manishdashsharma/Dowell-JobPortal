@@ -1,0 +1,600 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+        <link href="Styles/bootstrap-4.1.0.min.css" rel="stylesheet" type="text/css"/>
+        <link href="Styles/MainStyle.css" rel="stylesheet" type="text/css"/>
+        <title></title>
+        <style type="text/css">
+.btnContactSubmit
+{
+    width: max-content;
+    border-radius: 1rem;
+    padding: 1.5%;
+    color: #fff;
+    background-color: #0062cc;
+    border: none;
+    cursor: pointer;
+    margin-right: 6%;
+    background-color: white;
+    color: blue;
+    margin-top: 4%;
+    
+}
+.register .nav-tabs .nav-link:hover{
+    border: none;
+}
+.text-align{
+    margin-top: -3%;
+    margin-bottom: -9%;
+
+    padding: 10%;
+    margin-left: 30%;
+}
+.form-new{
+    margin-right: 22%;
+    margin-left: 20%;
+}
+.register-heading{
+    /*margin-left: 21%;*/
+    margin-bottom: 10%;
+    color: #e9ecef;
+}
+.register-heading h1{
+    /*margin-left: 21%;*/
+    margin-bottom: 10%;
+    color: #e9ecef;
+}
+.btnLoginSubmit{
+    border: none;
+    padding: 2%;
+    width: 25%;
+    cursor: pointer;
+    background: #29abe2;
+    color: #fff;
+}
+.btnForgetPwd{
+    cursor: pointer;
+    margin-right: 5%;
+    color: #f8f9fa;
+}
+.register{
+  
+    background-color: #000000;
+    background-image: linear-gradient(315deg, #000000 0%, #414141 74%);
+    margin-top: 3%;
+    padding: 3%;
+    border-radius: 2.5rem;
+}
+.nav-tabs .nav-link{
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: white;
+}
+* {
+    box-sizing: border-box;
+  }
+  
+  .column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+  /* Clearfix (clear floats) */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+        </style>
+    </head>
+    <body>
+
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active text-align form-new" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row register-form">
+                                <div class="col-md-12">
+                         
+                                 
+                                    <form action="" method="post">
+                                     
+                                        <select style='margin-left:180px;' class="btn btn-Primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="timeperiod">
+                                        
+                                         
+                                        </select>
+                                       
+                                        </div>
+                                        
+                                    </form>
+
+                                </div>
+                               
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+          </br>
+          <div style='margin-left:50px; font-weight:bold'>
+            UxLivingLab Team Member (Total number of candidate :<label id = "total_candidate"></label> )
+          </div>
+        </br>
+            <div class="row" id="candidate" style='width:100%; margin-left:50px;'>
+                                  
+            </div>
+                  
+          </br>
+          <div>
+            <div style='margin-left:50px; font-weight:bold'>
+              Candidate Applied for jobs
+            </div>
+          </br>
+            <canvas id="myChart6" style="width:10%;max-width:600px"></canvas>
+                </div>
+              </br>
+              <div style='margin-left:50px; font-weight:bold'>
+                HR Status
+              </div>
+            </br>
+                <div  class="row">
+            <canvas class="column" id="myChart1" style="width:10%;max-width:400px"></canvas>
+            
+             
+            <canvas class="column" id="myChart2" style="width:10%;max-width:400px"></canvas>
+              
+            <canvas class="column" id="myChart5" style="width:10%;max-width:400px"></canvas>
+            </div>
+          </br>
+          <div style='margin-left:50px; font-weight:bold'>
+            TeamLead Status
+
+          </div>
+        </br>
+            <div>
+            <canvas id="myChart3" style="width:10%;max-width:600px"></canvas>
+            </div>
+          </br>
+          <div style='margin-left:50px; font-weight:bold'>
+            Account Status
+
+          </div>
+        </br>
+            <div>
+              <canvas id="myChart4" style="width:10%;max-width:600px"></canvas>
+              </div>
+            </br>
+            <div style='margin-left:50px; font-weight:bold'>
+              Combine Status
+
+            </div>
+          </br>
+              <div style='margin-left:100px;'>
+                <canvas id="myChart7" style="width:10%;max-width:600px"></canvas>
+                </div>
+        </div>
+    </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+  $.ajax({
+    url: '/timeperiod/',
+    dataType: 'json',
+
+    success: function(data) {
+      a = data.time
+      let html_data = '<option value="">----select----</option>';
+      a.forEach(function (data) {
+          html_data += `<option value="${data}">${data}</option>`
+      });
+      $("#timeperiod").html(html_data); 
+    },
+   
+});
+</script>
+
+      <script>
+        $(function () {
+          $("#timeperiod").change(function (e) {
+              e.preventDefault();
+              var selectedText = $(this).find("option:selected").text();
+              var selectedValue = $(this).val();
+              var token = $('input[name=csrfmiddlewaretoken]').val();
+
+       
+              $.ajax({
+                type : 'POST',
+                url : '/report/',
+                data:{
+                    'Timeperiod' : selectedValue,
+                    
+                    csrfmiddlewaretoken : token
+                },
+                
+                success: function(data) {
+                
+                
+                 Candidate_data = data.candidate
+                 total_Candidate = data.total_candidate
+                 console.log(Candidate_data)
+                 let html_data = '<div></div>';
+                 Candidate_data.forEach(function (data) {
+                     html_data += `<div style='color:white ; margin-left:15px; margin-top:5px; background-color:gray;border-radius:3px;'>${data}  </div>`
+                 });
+                 $("#candidate").html(html_data); 
+                 
+                 $("#total_candidate").html(total_Candidate); 
+               
+                },
+                
+               
+                
+                });
+
+    });
+  });
+
+
+  
+
+
+      </script>
+
+
+        <script>
+            
+            $(function () {
+                $("#timeperiod").change(function (e) {
+                    e.preventDefault();
+                    var selectedText = $(this).find("option:selected").text();
+                    var selectedValue = $(this).val();
+                    var token = $('input[name=csrfmiddlewaretoken]').val();
+   
+
+    $.ajax({
+      type : 'POST',
+      url : '/Candidate_report/',
+      data:{
+          'Timeperiod' : selectedValue,
+          
+          csrfmiddlewaretoken : token
+      },
+     
+      success: function(response1)
+      {  
+        
+                Candidate = response1.status[0]
+                
+                chartcandidate(response1.status)
+             
+               
+             
+      }
+              
+      
+  
+       
+      });
+                    
+
+                    $.ajax({
+                        type : 'POST',
+                        url :'/hr_report/',
+                        data:{
+                            'Timeperiod' : selectedValue,
+                            
+                            csrfmiddlewaretoken : token
+                        },
+                       
+                        success: function(response)
+                        {  
+                          
+                          
+                    
+                               shortlisted = [response.status[0]]
+                                  selected = [response.status[1]]
+                                  shortlist_data = response.status[0]
+                                  selected_data = response.status[0]
+                                  chartjs(response.status)
+                                  chartshortlisted(shortlisted)
+                                  chartselected(selected)
+                           
+                        }
+                                
+                        
+                    
+                         
+                        });
+
+
+
+                        $.ajax({
+                          type : 'POST',
+                          url : '/Teamlead_report/',
+                          data:{
+                              'Timeperiod' : selectedValue,
+                              
+                              csrfmiddlewaretoken : token
+                          },
+                         
+                          success: function(response2)
+                          {  
+                            
+                            
+              
+                                   Teamlead_hire = response2.status[0]
+                                   chartteamlead_hire(response2.status)
+                                 
+                                 
+                          }
+                                  
+                          
+                      
+                           
+                          });     
+
+
+                    
+                      $.ajax({
+                        type : 'POST',
+                        url : '/account_report/',
+                        data:{
+                            'Timeperiod' : selectedValue,
+                            
+                            csrfmiddlewaretoken : token
+                        },
+                       
+                        success: function(response3)
+                        {  
+                          
+                         
+                          Hired = response3.status[0]
+                          main_data = [shortlist_data , selected_data, Hired ,Teamlead_hire , Candidate]
+                          chartHired(response3.status)
+                          MianChart(main_data)
+                         
+                               
+                               
+                        }
+                                
+                        
+                    
+                         
+                        });
+
+
+                       
+                });
+            });
+        
+          </script>
+
+
+          <script>
+
+
+            function MianChart(value)
+  {
+  var xValues = ["shortlisted" , "Selected" ,"teamlead_hire","Hired", "pending"];
+    var barColors = [
+    "#b91d47",
+    "#00aba9",
+    "#2b5797",
+    "#e8c3b9",
+    "#00b359",
+  
+  
+    
+    ];
+    
+    new Chart("myChart7", {
+      
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: value
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Candidate status"
+        }
+      }
+    });
+  } 
+       
+            function chartshortlisted(value)
+            {
+           var xValues = ["Shortlisted candidate by HR"];
+              var barColors = [
+                "#b91d47",
+               
+              
+              ];
+              
+              new Chart("myChart1", {
+                
+                type: "pie",
+                data: {
+                
+                  datasets: [{
+                    backgroundColor: barColors,
+                    data: value
+                  }]
+                },
+                options: {
+                  title: {
+                    display: true,
+                    text: "Hr status"
+                  }
+                }
+              });
+          } 
+  
+  
+  
+          function chartselected(value)
+          {
+         var xValues = ["Selected candidate by HR"];
+            var barColors = [
+            "#00aba9",
+             
+            
+            ];
+            
+            new Chart("myChart2", {
+              
+              type: "pie",
+              data: {
+           
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: value
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "Hr status"
+                }
+              }
+            });
+        } 
+  
+  
+        function chartteamlead_hire(value)
+        {
+       var xValues = ["Selected candidate by TeamLead"];
+          var barColors = [
+            "#2b5797",
+           
+          
+          ];
+          
+          new Chart("myChart3", {
+            
+            type: "pie",
+            data: {
+            
+              datasets: [{
+                backgroundColor: barColors,
+                data: value
+              }]
+            },
+            options: {
+              title: {
+                display: true,
+                text: "TeamLead status"
+              }
+            }
+          });
+      } 
+  
+  
+      function chartHired(value)
+      {
+     var xValues = ["Candidate onboard"];
+        var barColors = [
+        "#e8c3b9",
+         
+        
+        ];
+        
+        new Chart("myChart4", {
+          
+          type: "pie",
+          data: {
+         
+            datasets: [{
+              backgroundColor: barColors,
+              data: value
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "Account status"
+            }
+          }
+        });
+    } 
+  
+  
+    function chartjs(value)
+    {
+   var xValues = ["Shortlisted candidate by HR" ,"Selected candidate by HR"];
+      var barColors = [
+      "#b91d47",
+      "#00aba9",
+    
+       
+      
+      ];
+      
+      new Chart("myChart5", {
+        
+        type: "pie",
+        data: {
+         
+          datasets: [{
+            backgroundColor: barColors,
+            data: value
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Hr status"
+          }
+        }
+      });
+  } 
+  
+  
+  function chartcandidate(value)
+  {
+  var xValues = ["Candidate applied for job"];
+    var barColors = [
+    "#00b359",
+    
+    ];
+    
+    new Chart("myChart6", {
+      
+      type: "pie",
+      data: {
+    
+        datasets: [{
+          backgroundColor: barColors,
+          data: value
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Candidate status"
+        }
+      }
+    });
+  } 
+  
+  
+  
+  
+  
+          </script>
+</body>
+</html>
